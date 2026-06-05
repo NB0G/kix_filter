@@ -87,6 +87,36 @@ public class main {
             outputDataF[i] = convertFromShortToFloat(outputData[i]);
         }
 
+        System.out.println("coefs:");
+        for (int i = 0; i < 16; i++) {
+            System.out.print(coefficientsF[i] + " ");
+        }
+        System.out.println();
+        for (int i = 0; i < 16; i++) {
+            System.out.print(coefficients[i] + " ");
+        }
+        System.out.println();
+
+        System.out.println("input data:");
+        for (int i = 0; i < 100; i++) {
+            System.out.print(inputDataF[i] + " ");
+        }
+        System.out.println();
+        for (int i = 0; i < 100; i++) {
+            System.out.print(inputData[i] + " ");
+        }
+        System.out.println();
+
+        System.out.println("output data:");
+        for (int i = 0; i < 100; i++) {
+            System.out.print(outputDataF[i] + " ");
+        }
+        System.out.println();
+        for (int i = 0; i < 100; i++) {
+            System.out.print(outputData[i] + " ");
+        }
+        System.out.println();
+
         writeCoefs("output.txt");
         drawGraphs();
     }
