@@ -13,10 +13,10 @@ public class graph_painter {
     private static final int GRAPH_WIDTH = 800;
     private static final int GRAPH_HEIGHT = 500;
     private static final int GRAPH_PADDING = 50;
-    private static final String GRAPH_FILE_PATH = "graph.png";
 
-    public static void saveGraph(float[] values, String title) throws IOException {
+    public static void saveGraph(float[] values, String title, String fileName) throws IOException {
         validateGraphValues(values);
+        validateFileName(fileName);
 
         BufferedImage image = new BufferedImage(GRAPH_WIDTH, GRAPH_HEIGHT, BufferedImage.TYPE_INT_RGB);
         Graphics2D graphics = image.createGraphics();
@@ -30,7 +30,7 @@ public class graph_painter {
         drawGraphLine(graphics, values);
         graphics.dispose();
 
-        ImageIO.write(image, "png", new File(GRAPH_FILE_PATH));
+        ImageIO.write(image, "png", new File(fileName));
     }
 
     private static void validateGraphValues(float[] values) {
@@ -39,6 +39,12 @@ public class graph_painter {
         }
         if (values.length == 0) {
             throw new IllegalArgumentException("Values array must not be empty");
+        }
+    }
+
+    private static void validateFileName(String fileName) {
+        if (fileName == null || fileName.isBlank()) {
+            throw new IllegalArgumentException("File name must not be empty");
         }
     }
 
