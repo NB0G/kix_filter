@@ -44,7 +44,7 @@ public class main {
 
     private static void fillWorkData(int startIndex) {
         for (int i = 0; i < 16; i++) {
-            if (startIndex - i < 0 || startIndex - i >= 16) {
+            if (startIndex - i < 0 || startIndex - i >= 100) {
                 workData[i] = 0;
             } else {
                 workData[i] = inputData[startIndex - i];
@@ -85,37 +85,43 @@ public class main {
             fillWorkData(i);
             outputData[i] = processData();
             outputDataF[i] = convertFromShortToFloat(outputData[i]);
+
+            System.out.println("work data:" + i + " ");
+            for (int j = 0; j < 16; j++) {
+                System.out.print(workData[j] + " ");
+            }
+            System.out.println();
         }
 
-        System.out.println("coefs:");
-        for (int i = 0; i < 16; i++) {
-            System.out.print(coefficientsF[i] + " ");
-        }
-        System.out.println();
-        for (int i = 0; i < 16; i++) {
-            System.out.print(coefficients[i] + " ");
-        }
-        System.out.println();
+        // System.out.println("coefs:");
+        // for (int i = 0; i < 16; i++) {
+        //     System.out.print(coefficientsF[i] + " ");
+        // }
+        // System.out.println();
+        // for (int i = 0; i < 16; i++) {
+        //     System.out.print(coefficients[i] + " ");
+        // }
+        // System.out.println();
 
-        System.out.println("input data:");
-        for (int i = 0; i < 100; i++) {
-            System.out.print(inputDataF[i] + " ");
-        }
-        System.out.println();
-        for (int i = 0; i < 100; i++) {
-            System.out.print(inputData[i] + " ");
-        }
-        System.out.println();
+        // System.out.println("input data:");
+        // for (int i = 0; i < 100; i++) {
+        //     System.out.print(inputDataF[i] + " ");
+        // }
+        // System.out.println();
+        // for (int i = 0; i < 100; i++) {
+        //     System.out.print(inputData[i] + " ");
+        // }
+        // System.out.println();
 
-        System.out.println("output data:");
-        for (int i = 0; i < 100; i++) {
-            System.out.print(outputDataF[i] + " ");
-        }
-        System.out.println();
-        for (int i = 0; i < 100; i++) {
-            System.out.print(outputData[i] + " ");
-        }
-        System.out.println();
+        // System.out.println("output data:");
+        // for (int i = 0; i < 100; i++) {
+        //     System.out.print(outputDataF[i] + " ");
+        // }
+        // System.out.println();
+        // for (int i = 0; i < 100; i++) {
+        //     System.out.print(outputData[i] + " ");
+        // }
+        // System.out.println();
 
         writeCoefs("output.txt");
         drawGraphs();

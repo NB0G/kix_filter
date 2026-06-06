@@ -12,7 +12,8 @@ import javax.imageio.ImageIO;
 public class graph_painter {
     private static final int GRAPH_WIDTH = 800;
     private static final int GRAPH_HEIGHT = 500;
-    private static final int GRAPH_PADDING = 50;
+    private static final int GRAPH_PADDING = 55;
+    private static final int VERTICAL_LABELS_COUNT = 5;
 
     public static void saveGraph(float[] values, String title, String fileName) throws IOException {
         validateGraphValues(values);
@@ -25,9 +26,12 @@ public class graph_painter {
         graphics.setColor(Color.WHITE);
         graphics.fillRect(0, 0, GRAPH_WIDTH, GRAPH_HEIGHT);
 
+        float min = getMinValue(values);
+        float max = getMaxValue(values);
+
         drawTitle(graphics, title);
-        drawAxes(graphics);
-        drawGraphLine(graphics, values);
+        drawAxes(graphics, min, max);
+        drawGraphLine(graphics, values, min, max);
         graphics.dispose();
 
         ImageIO.write(image, "png", new File(fileName));
@@ -48,7 +52,7 @@ public class graph_painter {
         }
     }
 
-    private static void drawAxes(Graphics2D graphics) {
+    private static void drawAxes(Graphics2D graphics, float min, float max) {
         int left = GRAPH_PADDING;
         int top = getGraphTop();
         int right = GRAPH_WIDTH - GRAPH_PADDING;
@@ -61,6 +65,8 @@ public class graph_painter {
             graphics.drawLine(x, top, x, bottom);
             graphics.drawLine(left, y, right, y);
         }
+
+        drawVerticalLabels(graphics, min, max, left, top, bottom);
 
         graphics.setColor(Color.BLACK);
         graphics.setStroke(new BasicStroke(2));
@@ -82,18 +88,7 @@ public class graph_painter {
         graphics.drawString(title, Math.max(x, GRAPH_PADDING), y);
     }
 
-    private static void drawGraphLine(Graphics2D graphics, float[] values) {
-        float min = values[0];
-        float max = values[0];
-        for (float value : values) {
-            if (value < min) {
-                min = value;
-            }
-            if (value > max) {
-                max = value;
-            }
-        }
-
+    private static void drawGraphLine(Graphics2D graphics, float[] values, float min, float max) {
         int left = GRAPH_PADDING;
         int top = getGraphTop();
         int right = GRAPH_WIDTH - GRAPH_PADDING;
@@ -116,6 +111,42 @@ public class graph_painter {
             int y2 = getGraphY(values[i], min, range, top, bottom);
             graphics.drawLine(x1, y1, x2, y2);
         }
+    }
+
+    private static void drawVerticalLabels(Graphics2D graphics, float min, float max, int left, int top, int bottom) {
+        graphics.setColor(Color.BLACK);
+        graphics.setFont(new Font("SansSerif", Font.PLAIN, 12));
+
+        FontMetrics metrics = graphics.getFontMetrics();
+        float range = max - min;
+        for (int i = 0; i <= VERTICAL_LABELS_COUNT; i++) {
+            int y = bottom - (bottom - top) * i / VERTICAL_LABELS_COUNT;
+            float value = range == 0 ? min : min + range * i / VERTICAL_LABELS_COUNT;
+            String label = String.format("%.3f", value);
+
+            int x = left - metrics.stringWidth(label) - 8;
+            graphics.drawString(label, x, y + metrics.getAscent() / 2 - 2);
+        }
+    }
+
+    private static float getMinValue(float[] values) {
+        float min = values[0];
+        for (float value : values) {
+            if (value < min) {
+                min = value;
+            }
+        }
+        return min;
+    }
+
+    private static float getMaxValue(float[] values) {
+        float max = values[0];
+        for (float value : values) {
+            if (value > max) {
+                max = value;
+            }
+        }
+        return max;
     }
 
     private static int getGraphY(float value, float min, float range, int top, int bottom) {
